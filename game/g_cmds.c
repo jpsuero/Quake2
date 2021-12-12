@@ -899,6 +899,23 @@ void Cmd_PlayerList_f(edict_t *ent)
 	gi.cprintf(ent, PRINT_HIGH, "%s", text);
 }
 
+void Cmd_Chasecam_Toggle(edict_t* ent)
+{
+	// Added by WarZone - Begin
+	if (!ent->waterlevel && !ent->deadflag)
+	{
+		if (ent->client->chasetoggle)
+			ChasecamRemove(ent, "off");
+		else
+		{
+			ChasecamStart(ent);
+			gi.cprintf(ent,PRINT_HIGH, "Third Person Activated\n");
+		}
+	}
+	else if (ent->waterlevel && !ent->deadflag)
+		gi.cprintf(ent, PRINT_HIGH, "Camera cannot be modified while in water\n");
+	// Added by WarZone - End
+}
 
 /*
 =================
@@ -985,6 +1002,8 @@ void ClientCommand (edict_t *ent)
 		Cmd_PutAway_f (ent);
 	else if (Q_stricmp (cmd, "wave") == 0)
 		Cmd_Wave_f (ent);
+	else if (Q_stricmp(cmd, "chasecam") == 0)
+		Cmd_Chasecam_Toggle(ent);
 	else if (Q_stricmp(cmd, "playerlist") == 0)
 		Cmd_PlayerList_f(ent);
 	else	// anything that doesn't match a command will be a chat
