@@ -26,4 +26,30 @@ Thanks to Robert Duffy for doing the grunt work of building this release.
 John Carmack
 Id Software
 
+-------------------------------------------------------------------------------------------------------
+Rachet and Clank MOD Final Project
+Play this mod to jump and move around like Ratchet while using some of his iconic weapons and gadgets.
+
+Weapons:
+Blaster - powerful blaster that to kill enemies from long or short range.
+Bomb glove - shoots out an explosive bomb that to blow away your enemies
+Agents of Doom - spawns in flying robots that kill enemies
+Omniwrench - melee weapon
+
+Gadgets:
+Void Reactor - spawn a shield to protect yourself from enemy projectiles
+Sheepinator - turn your enemies into animals
+Teleporter - shoot to where you wanna go
+
+Thirdperson - press "u" to change into third person mode
+
+INSTRUCTIONS
+To play this mod please you can copy this repo into your own local repo. 
+Open "quake2.sln" in visual studio and change the output directory for the "game" project in visual studio to where you placed your MOD folder for Quake 2.
+To open this mod from a shortcut you create a shortcut to the quake2.exe and in properties add + set game <MOD NAME>. This allows the mod to open directly.
+Have fun!
+
+
+
+
 
