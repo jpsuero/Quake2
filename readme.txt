@@ -39,7 +39,9 @@ Omniwrench - melee weapon
 Gadgets:
 Void Reactor - spawn a shield to protect yourself from enemy projectiles
 Sheepinator - turn your enemies into animals
-Teleporter - shoot to where you wanna go
+Hookshot - press 9 to equip and grapple towards your enemies
+Gravity Boots- Press O to equip
+Hologuise- Press Y to dissapear
 
 Thirdperson - press "u" to change into third person mode
 

@@ -962,6 +962,9 @@ struct gclient_s
 	edict_t*	chasecam;
 	edict_t*	oldplayer;
 
+	//gravity variable
+	int			gravityon;
+
 	edict_t		*chase_target;		// player we are chasing
 	qboolean	update_chase;		// need to update chase info?
 };

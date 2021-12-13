@@ -22,7 +22,7 @@ void ChasecamStart(edict_t* ent)
 	chasecam->movetype = MOVETYPE_FLYMISSILE;
 
 	//THIS TURNS OFF QUAKE 2'S INCINATION TO PREDICT CAMERA DIRECTION
-	ent->client->ps.pmove.pm_flags = PMF_NO_PREDICTION;
+	ent->client->ps.pmove.pm_flags |= PMF_NO_PREDICTION;
 
 	//this tells quake 2 to not send unnecessary info to other players
 	ent->svflags |= SVF_NOCLIENT;
@@ -142,6 +142,8 @@ void ChasecamTrack(edict_t* ent)
     
     //this works! not perfect
     spot2[0] = (spot2[0] + 80.000);
+
+
 	
     //if client is looking down, go backwards up in the air with a ratio of 0.6
 	if (ent->owner->client->v_angle[0] < 0.000)
@@ -256,7 +258,7 @@ void ChasecamTrack(edict_t* ent)
 
          * speed of the chasecam entity */
 
-        tot = (distance * 0.400);
+        tot = (distance * 0.100);
 
 
 
@@ -370,6 +372,7 @@ void ChasecamTrack(edict_t* ent)
 
     /* add to the distance between the player and the camera */
 
+    
     ent->chasedist1 += 2;
 
 

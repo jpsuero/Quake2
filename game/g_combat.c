@@ -20,6 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // g_combat.c
 
 #include "g_local.h"
+#include "m_flyer.h"
 
 /*
 ============
@@ -400,6 +401,15 @@ void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 		}
 	}
 	meansOfDeath = mod;
+	if (mod == MOD_RAILGUN)
+	{
+		edict_t* sheep;
+		sheep = G_Spawn();
+		
+		//teleports player to body
+		VectorCopy(targ->s.origin, inflictor->s.origin);
+	}
+
 
 	// easy mode takes half damage
 	if (skill->value == 0 && deathmatch->value == 0 && targ->client)
