@@ -76,7 +76,7 @@ void ChasecamRemove(edict_t* ent, char* opt)
 	//make weapon model of player appear on screen for first person
 	ent->client->ps.gunindex = gi.modelindex(ent->client->pers.weapon->view_model);
 
-	//make our invisible appearance the same model as diaply entity
+	//make our invisible appearance the same model as display entity
 	ent->s.modelindex = ent->client->oldplayer->s.modelindex;
 
 	ent->svflags &= ~SVF_NOCLIENT;

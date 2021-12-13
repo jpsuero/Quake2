@@ -963,7 +963,7 @@ struct gclient_s
 	edict_t*	oldplayer;
 
 	//gravity variable
-	int			gravityon;
+	int			gravityboots;
 
 	edict_t		*chase_target;		// player we are chasing
 	qboolean	update_chase;		// need to update chase info?

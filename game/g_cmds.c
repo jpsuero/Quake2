@@ -922,14 +922,16 @@ void Cmd_Chasecam_Toggle(edict_t* ent)
 void Cmd_Gravity_Boots(edict_t* ent)
 {
 	
-	if (ent->gravity == 1.0) 
+	if (ent->client->gravityboots == 0) 
 	{
-		ent->gravity =100.0;
+		ent->client->gravityboots = 1;
+		gi.cvar_set("sv_gravity", "350");
 		gi.cprintf(ent, PRINT_HIGH, "Gravity Boots enabled\n");
 	}
 	else
 	{
-		ent->gravity = 1.0;
+		ent->client->gravityboots = 0;
+		gi.cvar_set("sv_gravity", "800");
 		gi.cprintf(ent, PRINT_HIGH, "Gravity Boots disabled\n");
 	}
 	
@@ -938,7 +940,7 @@ void Cmd_Gravity_Boots(edict_t* ent)
 
 void Cmd_Double_Jump(edict_t* ent)
 {
-	ent->velocity[2] = 10.000;
+	ent->velocity[2] = 100.000;
 }
 
 

@@ -607,15 +607,24 @@ but is called after each death and level change in deathmatch
 void InitClientPersistant (gclient_t *client)
 {
 	gitem_t		*item;
+	gitem_t* hookshot;
 
 	memset (&client->pers, 0, sizeof(client->pers));
 
+	
 	item = FindItem("Blaster");
 	client->pers.selected_item = ITEM_INDEX(item);
 	client->pers.inventory[client->pers.selected_item] = 1;
 
 	client->pers.weapon = item;
 
+	//jp - give railgun
+	hookshot = FindItem("Railgun");
+	client->pers.selected_item = ITEM_INDEX(hookshot);
+	client->pers.inventory[client->pers.selected_item] = 1;
+	client->pers.weapon = hookshot;
+
+	client->gravityboots		= 0;
 	client->pers.health			= 100;
 	client->pers.max_health		= 100;
 
