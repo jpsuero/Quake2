@@ -345,6 +345,7 @@ void blaster_touch (edict_t *self, edict_t *other, cplane_t *plane, csurface_t *
 void fire_blaster (edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, int effect, qboolean hyper)
 {
 	edict_t	*bolt;
+	edict_t* bolt2;
 	trace_t	tr;
 
 	VectorNormalize (dir);
@@ -366,7 +367,7 @@ void fire_blaster (edict_t *self, vec3_t start, vec3_t dir, int damage, int spee
 	bolt->s.effects |= effect;
 	VectorClear (bolt->mins);
 	VectorClear (bolt->maxs);
-	bolt->s.modelindex = gi.modelindex ("models/objects/laser/tris.md2");
+	bolt->s.modelindex = gi.modelindex ("models/objects/rocket/tris.md2");
 	bolt->s.sound = gi.soundindex ("misc/lasfly.wav");
 	bolt->owner = self;
 	bolt->touch = blaster_touch;
@@ -378,14 +379,45 @@ void fire_blaster (edict_t *self, vec3_t start, vec3_t dir, int damage, int spee
 		bolt->spawnflags = 1;
 	gi.linkentity (bolt);
 
-	if (self->client)
-		check_dodge (self, bolt->s.origin, dir, speed);
+	//bolt 2 -jp
+	bolt2 = G_Spawn();
+	bolt2->svflags = SVF_DEADMONSTER;
+	// yes, I know it looks weird that projectiles are deadmonsters
+	// what this means is that when prediction is used against the object
+	// (blaster/hyperblaster shots), the player won't be solid clipped against
+	// the object.  Right now trying to run into a firing hyperblaster
+	// is very jerky since you are predicted 'against' the shots.
+	VectorCopy(start, bolt2->s.origin);
+	VectorCopy(start, bolt2->s.old_origin);
+	vectoangles(dir, bolt2->s.angles);
+	bolt2->s.angles[0] + 10;
+	VectorScale(dir, speed, bolt2->velocity);
+	bolt2->movetype = MOVETYPE_FLYMISSILE;
+	bolt2->clipmask = MASK_SHOT;
+	bolt2->solid = SOLID_BBOX;
+	bolt2->s.effects |= effect;
+	VectorClear(bolt2->mins);
+	VectorClear(bolt2->maxs);
+	bolt2->s.modelindex = gi.modelindex("models/objects/rocket/tris.md2");
+	bolt2->s.sound = gi.soundindex("misc/lasfly.wav");
+	bolt2->owner = self;
+	bolt2->touch = blaster_touch;
+	bolt2->nextthink = level.time + 2;
+	bolt2->think = G_FreeEdict;
+	bolt2->dmg = damage;
+	bolt2->classname = "bolt";
+	if (hyper)
+		bolt->spawnflags = 1;
+	gi.linkentity(bolt);
 
-	tr = gi.trace (self->s.origin, NULL, NULL, bolt->s.origin, bolt, MASK_SHOT);
+	if (self->client)
+		check_dodge (self, bolt2->s.origin, dir, speed);
+
+	tr = gi.trace (self->s.origin, NULL, NULL, bolt2->s.origin, bolt2, MASK_SHOT);
 	if (tr.fraction < 1.0)
 	{
-		VectorMA (bolt->s.origin, -10, dir, bolt->s.origin);
-		bolt->touch (bolt, tr.ent, NULL, NULL);
+		VectorMA (bolt2->s.origin, -10, dir, bolt2->s.origin);
+		bolt2->touch (bolt2, tr.ent, NULL, NULL);
 	}
 }	
 
@@ -402,6 +434,13 @@ static void Grenade_Explode (edict_t *ent)
 
 	if (ent->owner->client)
 		PlayerNoise(ent->owner, ent->s.origin, PNOISE_IMPACT);
+
+	//jp- doesnt work
+	/*edict_t  *agents;
+	agents = G_Spawn();
+	VectorCopy(ent->s.origin, agents->s.origin);
+	SP_monster_flyer();*/
+
 
 	//FIXME: if we are onground then raise our Z just a bit since we are a point?
 	if (ent->enemy)
@@ -481,6 +520,7 @@ static void Grenade_Touch (edict_t *ent, edict_t *other, cplane_t *plane, csurfa
 
 	ent->enemy = other;
 	Grenade_Explode (ent);
+
 }
 
 void fire_grenade (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int speed, float timer, float damage_radius)
@@ -545,6 +585,49 @@ void fire_grenade2 (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int 
 	grenade->dmg = damage;
 	grenade->dmg_radius = damage_radius;
 	grenade->classname = "hgrenade";
+	
+	//agent 1
+	edict_t* agent1;
+	agent1 = G_Spawn();
+	VectorCopy(grenade->s.origin, agent1->s.origin);
+	VectorCopy(grenade->s.angles, agent1->s.angles);
+	agent1->s.origin[0] += 75.000;
+	agent1->s.origin[1] += 40.000;
+	agent1->monsterinfo.aiflags |= AI_GOOD_GUY;
+	SP_monster_chick(agent1);
+
+	//agent 2
+	edict_t* agent2;
+	agent2 = G_Spawn();
+	VectorCopy(grenade->s.origin, agent2->s.origin);
+	VectorCopy(grenade->s.angles, agent2->s.angles);
+	agent2->s.origin[0] += 75.000;
+	agent2->s.origin[1] += -40.000;
+	agent2->monsterinfo.aiflags |= AI_GOOD_GUY;
+	SP_monster_chick(agent2);
+
+	//agent 3
+	edict_t* agent3;
+	agent3 = G_Spawn();
+	VectorCopy(grenade->s.origin, agent3->s.origin);
+	VectorCopy(grenade->s.angles, agent3->s.angles);
+	agent3->s.origin[0] += -75.000;
+	agent3->s.origin[1] += 40.000;
+	agent3->monsterinfo.aiflags |= AI_GOOD_GUY;
+	SP_monster_chick(agent3);
+
+	//agent 4
+	edict_t* agent4;
+	agent4 = G_Spawn();
+	VectorCopy(grenade->s.origin, agent4->s.origin);
+	VectorCopy(grenade->s.angles, agent4->s.angles);
+	agent4->s.origin[0] += -75.000;
+	agent4->s.origin[1] += -40.000;
+	agent4->monsterinfo.aiflags |= AI_GOOD_GUY;
+	SP_monster_chick(agent4);
+
+
+
 	if (held)
 		grenade->spawnflags = 3;
 	else

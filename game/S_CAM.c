@@ -146,12 +146,12 @@ void ChasecamTrack(edict_t* ent)
 
 	
     //if client is looking down, go backwards up in the air with a ratio of 0.6
-	if (ent->owner->client->v_angle[0] < 0.000)
+	if (ent->owner->client->v_angle[2] < 0.000)
 		VectorMA(spot2, -(ent->owner->client->v_angle[0] * 0.6), up, spot2);
 	//same for client looking up
-	else if (ent->owner->client->v_angle[0] > 0.000)
-		VectorMA(spot2, (ent->owner->client->v_angle[0] * 0.6), up, spot2);
-
+	else if (ent->owner->client->v_angle[2] > 0.000)
+		VectorMA(spot2, (ent->owner->client->v_angle[0] * -0.6), up, spot2);
+ 
 	//make tr traceline from player model's pos to spot 2
 	tr = gi.trace(ent->owner->s.origin, NULL, NULL, spot2, ent->owner, false);
 

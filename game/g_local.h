@@ -965,6 +965,9 @@ struct gclient_s
 	//gravity variable
 	int			gravityboots;
 
+	//sheep count
+	int			sheepcount;
+
 	edict_t		*chase_target;		// player we are chasing
 	qboolean	update_chase;		// need to update chase info?
 };

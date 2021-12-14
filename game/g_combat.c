@@ -90,7 +90,7 @@ qboolean CanDamage (edict_t *targ, edict_t *inflictor)
 Killed
 ============
 */
-void Killed (edict_t *targ, edict_t *inflictor, edict_t *attacker, int damage, vec3_t point)
+void Killed (edict_t *targ, edict_t *inflictor, edict_t *attacker, int damage, vec3_t point, int mod)
 {
 	if (targ->health < -999)
 		targ->health = -999;
@@ -121,6 +121,17 @@ void Killed (edict_t *targ, edict_t *inflictor, edict_t *attacker, int damage, v
 	{
 		targ->touch = NULL;
 		monster_death_use (targ);
+	}
+
+	//turns killed enemies into sheep - jp
+	if (mod == MOD_HYPERBLASTER)
+	{
+		edict_t* sheep;
+		sheep = G_Spawn();
+		VectorCopy(targ->s.origin, sheep->s.origin);
+		sheep->monsterinfo.aiflags |= AI_GOOD_GUY;
+		SP_monster_parasite(sheep);
+		//inflictor->client->sheepcount++; tried to do a sheep count but doesnt work - jp
 	}
 
 	targ->die (targ, inflictor, attacker, damage, point);
@@ -401,14 +412,14 @@ void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 		}
 	}
 	meansOfDeath = mod;
+	
+	//jp - hookshot function
 	if (mod == MOD_RAILGUN)
-	{
-		edict_t* sheep;
-		sheep = G_Spawn();
-		
-		//teleports player to body
+	{	
+		//teleports player to body for hookshot
 		VectorCopy(targ->s.origin, inflictor->s.origin);
 	}
+	
 
 
 	// easy mode takes half damage
@@ -508,7 +519,7 @@ void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 		{
 			if ((targ->svflags & SVF_MONSTER) || (client))
 				targ->flags |= FL_NO_KNOCKBACK;
-			Killed (targ, inflictor, attacker, take, point);
+			Killed (targ, inflictor, attacker, take, point, mod);
 			return;
 		}
 	}

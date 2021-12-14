@@ -313,6 +313,7 @@ static qboolean parasite_drain_attack_ok (vec3_t start, vec3_t end)
 	return true;
 }
 
+/* trying to not let attack -jp nvm didnt work */
 void parasite_drain_attack (edict_t *self)
 {
 	vec3_t	offset, start, f, r, end, dir;
@@ -430,6 +431,7 @@ Break Stuff Ends
 ===
 */
 
+ //trying to not let them attack -jp nvm didnt work
 void parasite_attack (edict_t *self)
 {
 //	if (random() <= 0.2)
