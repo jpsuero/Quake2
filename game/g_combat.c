@@ -124,7 +124,7 @@ void Killed (edict_t *targ, edict_t *inflictor, edict_t *attacker, int damage, v
 	}
 
 	//turns killed enemies into sheep - jp
-	if (mod == MOD_HYPERBLASTER)
+	if (mod == MOD_BLASTER)
 	{
 		edict_t* sheep;
 		sheep = G_Spawn();

@@ -607,7 +607,8 @@ but is called after each death and level change in deathmatch
 void InitClientPersistant (gclient_t *client)
 {
 	gitem_t		*item;
-	gitem_t		*hookshot;
+	gitem_t		*blaster;
+	gitem_t		*omni;
 
 	memset (&client->pers, 0, sizeof(client->pers));
 
@@ -618,11 +619,22 @@ void InitClientPersistant (gclient_t *client)
 
 	client->pers.weapon = item;
 
-	//jp - give railgun
-	hookshot = FindItem("Railgun");
-	client->pers.selected_item = ITEM_INDEX(hookshot);
+	//give omniwrench - jp
+	omni = FindItem("Shotgun");
+	client->pers.selected_item = ITEM_INDEX(omni);
 	client->pers.inventory[client->pers.selected_item] = 1;
-	client->pers.weapon = hookshot;
+	client->pers.weapon = omni;
+
+	
+	//give hyperblaster - jp
+	blaster = FindItem("HyperBlaster");
+	client->pers.selected_item = ITEM_INDEX(blaster);
+	client->pers.inventory[client->pers.selected_item] = 1;
+	client->pers.weapon = blaster;
+
+
+
+	
 
 	client->sheepcount			= 0;
 	client->gravityboots		= 0;

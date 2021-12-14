@@ -31,19 +31,25 @@ Rachet and Clank MOD Final Project
 Play this mod to jump and move around like Ratchet while using some of his iconic weapons and gadgets.
 
 Weapons:
-Blaster - powerful blaster that to kill enemies from long or short range.
-Blitzgun - blast away your enemies with this super shotgun
-Agents of Doom - spawns in agents that kill your enemies (use grenade)
-Omniwrench - melee weapon
+Blaster - powerful blaster to kill enemies from long or short range (press 8 to equip)
+Omniwrench - melee weapon (press "2" to equip)
+Agents of Doom - spawns in agents that kill your enemies (press "g" to equip)
+RYNO - decimate all who oppose you (press "0" to use)
 
 Gadgets:
-Void Reactor - spawn a shield to protect yourself from enemy projectiles
-Sheepinator - turn your enemies into animals (press 8 to equip)
+Sheepinator - turn your enemies into animals (press 1 to equip)
 Hookshot - grapple towards your enemies (press 9 to equip)
 Gravity Boots- Equip these bad boys to jump higher and farther (Press O to equip)
 Hologuise- Disguise as the enemy to walk right by them! (Press Y to dissapear)
 
-Thirdperson - press "u" to change into third person mode
+Thirdperson:
+press "u" to change into third person mode
+
+Movement:
+Double jump - press "spacebar" twice(ps. its unlimited)
+Dodge Right - press "e"
+Dodge Left - press "q"
+Long Jump - press "x"
 
 INSTRUCTIONS
 To play this mod please you can copy this repo into your own local repo. 

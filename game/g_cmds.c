@@ -919,6 +919,8 @@ void Cmd_Chasecam_Toggle(edict_t* ent)
 		gi.cprintf(ent, PRINT_HIGH, "Camera cannot be modified while in water\n");
 	// Added by WarZone - End
 }
+
+//low gravity boots -jp
 void Cmd_Gravity_Boots(edict_t* ent)
 {
 	
@@ -938,9 +940,43 @@ void Cmd_Gravity_Boots(edict_t* ent)
 
 }
 
+//movement commands! =jp
 void Cmd_Double_Jump(edict_t* ent)
 {
-	ent->velocity[2] = 100.000;
+	ent->velocity[2] = 300.000;
+}
+
+void Cmd_Long_Jump(edict_t* ent)
+{
+	ent->velocity[2] = 300.000;
+	ent->velocity[0] = -600.000;
+	gi.cprintf(ent, PRINT_HIGH, "LOOOOOONG jump\n");
+}
+
+void Cmd_Dodge_Right(edict_t* ent)
+{
+	ent->velocity[2] = 200.000;
+	ent->velocity[1] = 500.000;
+	gi.cprintf(ent, PRINT_HIGH, "Dodge!\n");
+}
+
+void Cmd_Dodge_Left(edict_t* ent)
+{
+	ent->velocity[2] = 200.000;
+	ent->velocity[1] = -500.000;
+	gi.cprintf(ent, PRINT_HIGH, "Dodge!\n");
+}
+
+void Cmd_Hulk_Jump(edict_t* ent)
+{
+	Cmd_God_f(ent);
+	ent->velocity[2] = 1000;
+}
+
+void Cmd_Fast(edict_t* ent)
+{
+	gi.cvar_set("sv_maxvelocity", "5000");
+	gi.cprintf(ent, PRINT_HIGH, "Fast as fuck boi\n");
 }
 
 
@@ -1029,14 +1065,24 @@ void ClientCommand (edict_t *ent)
 		Cmd_PutAway_f(ent);
 	else if (Q_stricmp(cmd, "wave") == 0)
 		Cmd_Wave_f(ent);
+	else if (Q_stricmp(cmd, "playerlist") == 0)
+		Cmd_PlayerList_f(ent);
 	else if (Q_stricmp(cmd, "chasecam") == 0)
 		Cmd_Chasecam_Toggle(ent);
 	else if (Q_stricmp(cmd, "gravityboots") == 0)
 		Cmd_Gravity_Boots(ent);
 	else if (Q_stricmp(cmd, "dubjump") == 0)
 		Cmd_Double_Jump(ent);
-	else if (Q_stricmp(cmd, "playerlist") == 0)
-		Cmd_PlayerList_f(ent);
+	else if (Q_stricmp(cmd, "longjump") == 0)
+		Cmd_Long_Jump(ent);
+	else if (Q_stricmp(cmd, "dodgeright") == 0)
+		Cmd_Dodge_Right(ent);
+	else if (Q_stricmp(cmd, "dodgeleft") == 0)
+		Cmd_Dodge_Left(ent);
+	else if (Q_stricmp(cmd, "hulkjump") == 0)
+		Cmd_Hulk_Jump(ent);
+	else if (Q_stricmp(cmd, "fast") == 0)
+		Cmd_Fast(ent);
 	else	// anything that doesn't match a command will be a chat
-		Cmd_Say_f (ent, false, true);
+		Cmd_Say_f(ent, false, true);
 }

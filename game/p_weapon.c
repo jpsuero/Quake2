@@ -820,6 +820,7 @@ void Blaster_Fire (edict_t *ent, vec3_t g_offset, int damage, qboolean hyper, in
 	vec3_t	forward, right;
 	vec3_t	start;
 	vec3_t	offset;
+	int		speed;
 
 	if (is_quad)
 		damage *= 4;
@@ -831,7 +832,14 @@ void Blaster_Fire (edict_t *ent, vec3_t g_offset, int damage, qboolean hyper, in
 	VectorScale (forward, -2, ent->client->kick_origin);
 	ent->client->kick_angles[0] = -1;
 
-	fire_blaster (ent, start, forward, 1000, 1000, effect, hyper);
+	//upgrade speeds of bullet after 5 kills - jp
+	if (level.killed_monsters >= 5)
+	{
+		speed = 1000;
+	}
+	else
+		speed = 300;
+	fire_blaster (ent, start, forward, damage, speed, effect, hyper);
 
 	// send muzzle flash
 	gi.WriteByte (svc_muzzleflash);
@@ -848,12 +856,9 @@ void Blaster_Fire (edict_t *ent, vec3_t g_offset, int damage, qboolean hyper, in
 
 void Weapon_Blaster_Fire (edict_t *ent)
 {
-	int		damage;
+	int		damage = 1000;
 
-	if (deathmatch->value)
-		damage = 15;
-	else
-		damage = 10;
+
 	Blaster_Fire (ent, vec3_origin, damage, false, EF_BLASTER);
 	ent->client->ps.gunframe++;
 }
@@ -902,10 +907,15 @@ void Weapon_HyperBlaster_Fire (edict_t *ent)
 				effect = EF_HYPERBLASTER;
 			else
 				effect = 0;
-			if (deathmatch->value)
-				damage = 15;
+			//upgrades gun after 5 kills -jp
+			if (level.killed_monsters >= 5)
+			{
+				//gi.cprintf(ent, PRINT_HIGH, "Weapons Upgraded");
+				damage = 100;
+				effect = EF_BLUEHYPERBLASTER;
+			}
 			else
-				damage = 20;
+				damage = 4;
 			Blaster_Fire (ent, offset, damage, true, effect);
 			if (! ( (int)dmflags->value & DF_INFINITE_AMMO ) )
 				ent->client->pers.inventory[ent->client->ammo_index]--;
@@ -1183,13 +1193,26 @@ SHOTGUN / SUPERSHOTGUN
 ======================================================================
 */
 
-void weapon_shotgun_fire (edict_t *ent)
+void weapon_shotgun_fire(edict_t* ent)
 {
 	vec3_t		start;
 	vec3_t		forward, right;
 	vec3_t		offset;
-	int			damage = 4;
-	int			kick = 8;
+	int			damage;
+	int			kick;
+
+	//upgrades gun after 5 kills -jp
+	if (level.killed_monsters >= 5)
+	{
+		//gi.cprintf(ent, PRINT_HIGH, "Weapons Upgraded");
+		damage = 6;
+		kick = 18;
+	}
+	else
+	{
+		damage = 2;
+		kick = 6;
+	}
 
 	if (ent->client->ps.gunframe == 9)
 	{
@@ -1214,7 +1237,7 @@ void weapon_shotgun_fire (edict_t *ent)
 	if (deathmatch->value)
 		fire_shotgun (ent, start, forward, damage, kick, 500, 500, DEFAULT_DEATHMATCH_SHOTGUN_COUNT, MOD_SHOTGUN);
 	else
-		fire_shotgun (ent, start, forward, damage, kick, 500, 500, DEFAULT_SHOTGUN_COUNT, MOD_SHOTGUN);
+		fire_shotgun (ent, start, forward, damage, kick, 250, 250, DEFAULT_SHOTGUN_COUNT, MOD_SHOTGUN);
 
 	// send muzzle flash
 	gi.WriteByte (svc_muzzleflash);

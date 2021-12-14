@@ -324,8 +324,8 @@ void HelpComputer (edict_t *ent)
 		"xv 50 yv 172 string2 \"%3i/%3i     %i/%i       %i/%i\" ", 
 		sk,
 		"Ratchet and Clank",
-		"Choose Weapons: 1, 3, 0, G",
-		"Choose Gadget: O, V, Y",
+		"Choose Weapons: 8, 2, G, 0",
+		"Choose Gadget: O, V, Y, 9",
 		level.killed_monsters, level.total_monsters, 
 		level.found_goals, level.total_goals,
 		level.found_secrets, level.total_secrets);

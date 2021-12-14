@@ -149,9 +149,20 @@ static void fire_lead (edict_t *self, vec3_t start, vec3_t aimdir, int damage, i
 		vectoangles (aimdir, dir);
 		AngleVectors (dir, forward, right, up);
 
+		int range;
+		//upgrades gun after 5 kills -jp
+		if (level.killed_monsters >= 5)
+		{
+			//gi.cprintf(ent, PRINT_HIGH, "Weapons Upgraded");
+			range = 600;
+		}
+		else
+			range = 200;
+
+
 		r = crandom()*hspread;
 		u = crandom()*vspread;
-		VectorMA (start, 8192, forward, end);
+		VectorMA (start, range, forward, end);
 		VectorMA (end, r, right, end);
 		VectorMA (end, u, up, end);
 
@@ -292,7 +303,7 @@ void fire_shotgun (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int k
 	int		i;
 
 	for (i = 0; i < count; i++)
-		fire_lead (self, start, aimdir, damage, kick, TE_SHOTGUN, hspread, vspread, mod);
+		fire_lead (self, start, aimdir, damage, kick, TE_GREENBLOOD, hspread, vspread, mod);
 }
 
 
@@ -329,8 +340,9 @@ void blaster_touch (edict_t *self, edict_t *other, cplane_t *plane, csurface_t *
 	}
 	else
 	{
+
 		gi.WriteByte (svc_temp_entity);
-		gi.WriteByte (TE_BLASTER);
+		gi.WriteByte(TE_BLASTER);
 		gi.WritePosition (self->s.origin);
 		if (!plane)
 			gi.WriteDir (vec3_origin);
@@ -345,7 +357,7 @@ void blaster_touch (edict_t *self, edict_t *other, cplane_t *plane, csurface_t *
 void fire_blaster (edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, int effect, qboolean hyper)
 {
 	edict_t	*bolt;
-	edict_t* bolt2;
+	
 	trace_t	tr;
 
 	VectorNormalize (dir);
@@ -379,45 +391,15 @@ void fire_blaster (edict_t *self, vec3_t start, vec3_t dir, int damage, int spee
 		bolt->spawnflags = 1;
 	gi.linkentity (bolt);
 
-	//bolt 2 -jp
-	bolt2 = G_Spawn();
-	bolt2->svflags = SVF_DEADMONSTER;
-	// yes, I know it looks weird that projectiles are deadmonsters
-	// what this means is that when prediction is used against the object
-	// (blaster/hyperblaster shots), the player won't be solid clipped against
-	// the object.  Right now trying to run into a firing hyperblaster
-	// is very jerky since you are predicted 'against' the shots.
-	VectorCopy(start, bolt2->s.origin);
-	VectorCopy(start, bolt2->s.old_origin);
-	vectoangles(dir, bolt2->s.angles);
-	bolt2->s.angles[0] + 10;
-	VectorScale(dir, speed, bolt2->velocity);
-	bolt2->movetype = MOVETYPE_FLYMISSILE;
-	bolt2->clipmask = MASK_SHOT;
-	bolt2->solid = SOLID_BBOX;
-	bolt2->s.effects |= effect;
-	VectorClear(bolt2->mins);
-	VectorClear(bolt2->maxs);
-	bolt2->s.modelindex = gi.modelindex("models/objects/rocket/tris.md2");
-	bolt2->s.sound = gi.soundindex("misc/lasfly.wav");
-	bolt2->owner = self;
-	bolt2->touch = blaster_touch;
-	bolt2->nextthink = level.time + 2;
-	bolt2->think = G_FreeEdict;
-	bolt2->dmg = damage;
-	bolt2->classname = "bolt";
-	if (hyper)
-		bolt->spawnflags = 1;
-	gi.linkentity(bolt);
 
 	if (self->client)
-		check_dodge (self, bolt2->s.origin, dir, speed);
+		check_dodge (self, bolt->s.origin, dir, speed);
 
-	tr = gi.trace (self->s.origin, NULL, NULL, bolt2->s.origin, bolt2, MASK_SHOT);
+	tr = gi.trace (self->s.origin, NULL, NULL, bolt->s.origin, bolt, MASK_SHOT);
 	if (tr.fraction < 1.0)
 	{
-		VectorMA (bolt2->s.origin, -10, dir, bolt2->s.origin);
-		bolt2->touch (bolt2, tr.ent, NULL, NULL);
+		VectorMA (bolt->s.origin, -10, dir, bolt->s.origin);
+		bolt->touch (bolt, tr.ent, NULL, NULL);
 	}
 }	
 
@@ -586,6 +568,8 @@ void fire_grenade2 (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int 
 	grenade->dmg_radius = damage_radius;
 	grenade->classname = "hgrenade";
 	
+	
+	
 	//agent 1
 	edict_t* agent1;
 	agent1 = G_Spawn();
@@ -593,8 +577,9 @@ void fire_grenade2 (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int 
 	VectorCopy(grenade->s.angles, agent1->s.angles);
 	agent1->s.origin[0] += 75.000;
 	agent1->s.origin[1] += 40.000;
+	agent1->s.origin[2] += 10.000;
 	agent1->monsterinfo.aiflags |= AI_GOOD_GUY;
-	SP_monster_chick(agent1);
+	
 
 	//agent 2
 	edict_t* agent2;
@@ -603,8 +588,9 @@ void fire_grenade2 (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int 
 	VectorCopy(grenade->s.angles, agent2->s.angles);
 	agent2->s.origin[0] += 75.000;
 	agent2->s.origin[1] += -40.000;
+	agent2->s.origin[2] += 10.000;
 	agent2->monsterinfo.aiflags |= AI_GOOD_GUY;
-	SP_monster_chick(agent2);
+	
 
 	//agent 3
 	edict_t* agent3;
@@ -613,8 +599,9 @@ void fire_grenade2 (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int 
 	VectorCopy(grenade->s.angles, agent3->s.angles);
 	agent3->s.origin[0] += -75.000;
 	agent3->s.origin[1] += 40.000;
+	agent3->s.origin[2] += 10.000;
 	agent3->monsterinfo.aiflags |= AI_GOOD_GUY;
-	SP_monster_chick(agent3);
+	
 
 	//agent 4
 	edict_t* agent4;
@@ -623,10 +610,24 @@ void fire_grenade2 (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int 
 	VectorCopy(grenade->s.angles, agent4->s.angles);
 	agent4->s.origin[0] += -75.000;
 	agent4->s.origin[1] += -40.000;
+	agent4->s.origin[2] += 10.000;
 	agent4->monsterinfo.aiflags |= AI_GOOD_GUY;
-	SP_monster_chick(agent4);
+	
 
-
+	//if enemies killed >5 than upgrade to woman beacuse they are better than men
+	if (level.killed_monsters >= 5)
+	{
+		agent1->s.origin[1] += 50;
+		SP_monster_jorg(agent1);
+		
+	}
+	else
+	{
+		SP_monster_chick(agent1);
+		SP_monster_chick(agent2);
+		SP_monster_chick(agent3);
+		SP_monster_chick(agent4);
+	}
 
 	if (held)
 		grenade->spawnflags = 3;
