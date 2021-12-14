@@ -383,7 +383,7 @@ void G_SetStats (edict_t *ent)
 	//
 	// health
 	//
-	ent->client->ps.stats[STAT_HEALTH_ICON] = level.pic_health;
+	ent->client->ps.stats[STAT_HEALTH_ICON] = gi.imageindex("p_quad");
 	ent->client->ps.stats[STAT_HEALTH] = ent->health;
 
 	//
