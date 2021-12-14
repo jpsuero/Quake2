@@ -973,11 +973,6 @@ void Cmd_Hulk_Jump(edict_t* ent)
 	ent->velocity[2] = 1000;
 }
 
-void Cmd_Fast(edict_t* ent)
-{
-	gi.cvar_set("sv_maxvelocity", "5000");
-	gi.cprintf(ent, PRINT_HIGH, "Fast as fuck boi\n");
-}
 
 
 /*
@@ -1081,8 +1076,6 @@ void ClientCommand (edict_t *ent)
 		Cmd_Dodge_Left(ent);
 	else if (Q_stricmp(cmd, "hulkjump") == 0)
 		Cmd_Hulk_Jump(ent);
-	else if (Q_stricmp(cmd, "fast") == 0)
-		Cmd_Fast(ent);
 	else	// anything that doesn't match a command will be a chat
 		Cmd_Say_f(ent, false, true);
 }
