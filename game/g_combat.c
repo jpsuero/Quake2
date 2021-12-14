@@ -419,6 +419,13 @@ void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 		//teleports player to body for hookshot
 		VectorCopy(targ->s.origin, inflictor->s.origin);
 	}
+
+	//launcher
+	if (mod == MOD_ROCKET)
+	{
+		targ->velocity[2] = 2000;
+		
+	}
 	
 
 

@@ -782,7 +782,8 @@ void Weapon_RocketLauncher_Fire (edict_t *ent)
 
 	VectorSet(offset, 8, 8, ent->viewheight-8);
 	P_ProjectSource (ent->client, ent->s.origin, offset, forward, right, start);
-	fire_rocket (ent, start, forward, damage, 650, damage_radius, radius_damage);
+	fire_rocket (ent, start, forward, 10, 650, 120, 10);
+	gi.cprintf(ent, PRINT_HIGH, "BEAM ME UP SCOTTY\n");
 
 	// send muzzle flash
 	gi.WriteByte (svc_muzzleflash);

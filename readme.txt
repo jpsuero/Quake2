@@ -41,6 +41,7 @@ Sheepinator - turn your enemies into animals (press 1 to equip)
 Hookshot - grapple towards your enemies (press 9 to equip)
 Gravity Boots- Equip these bad boys to jump higher and farther (Press O to equip)
 Hologuise- Disguise as the enemy to walk right by them! (Press Y to dissapear)
+Launcher - send your enemies flying into the air (press 7)
 
 Thirdperson:
 press "u" to change into third person mode
