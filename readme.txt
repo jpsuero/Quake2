@@ -50,6 +50,7 @@ Double jump - press "spacebar" twice(ps. its unlimited)
 Dodge Right - press "e"
 Dodge Left - press "q"
 Long Jump - press "x"
+Flight - press"v"
 
 INSTRUCTIONS
 To play this mod please you can copy this repo into your own local repo. 

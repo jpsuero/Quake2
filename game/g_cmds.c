@@ -374,12 +374,12 @@ void Cmd_Noclip_f (edict_t *ent)
 	if (ent->movetype == MOVETYPE_NOCLIP)
 	{
 		ent->movetype = MOVETYPE_WALK;
-		msg = "noclip OFF\n";
+		msg = "Flight Disabled\n";
 	}
 	else
 	{
 		ent->movetype = MOVETYPE_NOCLIP;
-		msg = "noclip ON\n";
+		msg = "Flight Enabled\n";
 	}
 
 	gi.cprintf (ent, PRINT_HIGH, msg);
