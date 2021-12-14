@@ -32,8 +32,8 @@ Play this mod to jump and move around like Ratchet while using some of his iconi
 
 Weapons:
 Blaster - powerful blaster that to kill enemies from long or short range.
-Bomb glove - shoots out an explosive bomb that to blow away your enemies
-Agents of Doom - spawns in flying robots that kill enemies
+Blitzgun - blast away your enemies with this super shotgun
+Agents of Doom - spawns in agents that kill your enemies (use grenade)
 Omniwrench - melee weapon
 
 Gadgets:
